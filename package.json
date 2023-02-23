@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "homepage": "https://batariloa.github.io/SocketIO-React",
+  "homepage": "https://batariloa.github.io/SocketIO-LiveChat-React",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
