@@ -1,6 +1,6 @@
 import "./App.css";
 import io from "socket.io-client";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Chat from "./components/Chat";
 
 const socket = io.connect("https://socket-io-chat-live.herokuapp.com");
@@ -12,7 +12,7 @@ function App() {
   const [showChat, setShowChat] = useState(false);
 
   const joinRoom = () => {
-    if (username === "" && room === "") return;
+    if (username === "" || room === "") return;
 
     socket.emit("join_room", room);
 
@@ -27,13 +27,13 @@ function App() {
           <input
             className="border-2 p-1 "
             type="text"
-            placeholder="Jack..."
+            placeholder="Name"
             onChange={(e) => setUsername(e.target.value)}
           ></input>
           <input
             className="border-2 p-1 "
             type="text"
-            placeholder="Room ID..."
+            placeholder="Room ID"
             onChange={(e) => setRoom(e.target.value)}
           ></input>
           <button className="border-2 p-1 hover:scale-110" onClick={joinRoom}>

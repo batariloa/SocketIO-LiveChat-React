@@ -6,10 +6,7 @@ function Chat({ socket, username, room }) {
   const message = useRef("");
   const messagesEndRef = useRef(null); // reference to the end of the messages container
 
-  const [messageList, setMessageList] = useState([
-    { room: "dasd", author: "dad", message: "asdasdsa", time: "14:4" },
-    { room: "dasd", author: "dad", message: "asdasdsa", time: "14:4" },
-  ]);
+  const [messageList, setMessageList] = useState([]);
 
   useEffect(() => {
     socket.on("receive_message", (messageData) => {
@@ -60,7 +57,7 @@ function Chat({ socket, username, room }) {
   }, [messageList]);
 
   return (
-    <div className="border-2 flex flex-col  w-[300px] md:w-[500px]   max-w-[1000px] p-3 ">
+    <div className="border-2 flex flex-col w-full max-w-[400px] sm:max-w-[500px] p-3  ">
       <div className="chat-header w-full">
         <p>Live chat</p>
       </div>
