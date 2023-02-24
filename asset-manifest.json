@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/SocketIO-LiveChat-React/static/css/main.8690b55a.css",
-    "main.js": "/SocketIO-LiveChat-React/static/js/main.149c0f51.js",
+    "main.css": "/SocketIO-LiveChat-React/static/css/main.f5241e0c.css",
+    "main.js": "/SocketIO-LiveChat-React/static/js/main.1bc41e51.js",
     "static/js/787.c4e7f8f9.chunk.js": "/SocketIO-LiveChat-React/static/js/787.c4e7f8f9.chunk.js",
     "index.html": "/SocketIO-LiveChat-React/index.html",
-    "main.8690b55a.css.map": "/SocketIO-LiveChat-React/static/css/main.8690b55a.css.map",
-    "main.149c0f51.js.map": "/SocketIO-LiveChat-React/static/js/main.149c0f51.js.map",
+    "main.f5241e0c.css.map": "/SocketIO-LiveChat-React/static/css/main.f5241e0c.css.map",
+    "main.1bc41e51.js.map": "/SocketIO-LiveChat-React/static/js/main.1bc41e51.js.map",
     "787.c4e7f8f9.chunk.js.map": "/SocketIO-LiveChat-React/static/js/787.c4e7f8f9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.8690b55a.css",
-    "static/js/main.149c0f51.js"
+    "static/css/main.f5241e0c.css",
+    "static/js/main.1bc41e51.js"
   ]
 }
