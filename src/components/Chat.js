@@ -120,7 +120,31 @@ function Chat({ socket, username, room }) {
         <div className="w-full flex flex-grow flex-col mt-2 justify-between ">
           <div className="chat-body  overflow-y-scroll overflow-x-hidden p-3 h-[370px]">
             {messageList.map((msg) => {
-              if (msg.type !== "error") {
+              if (msg.type === "error") {
+                return (
+                  <div
+                    className=" border-2 max-w-full  w-fit px-2 py-1 mt-2 rounded-md  break-words"
+                    key={nanoid()}
+                  >
+                    <div>
+                      <h1 className="text-red-500">{msg.message}</h1>
+                    </div>
+                  </div>
+                );
+              } else if (msg.type === "info")
+                return (
+                  <div
+                    className=" border-2 max-w-full  w-fit px-2 py-1 mt-2 rounded-md  break-words"
+                    key={nanoid()}
+                  >
+                    <div>
+                      <h1 className="italic text-blue-500 opacity-70">
+                        {msg.message}
+                      </h1>
+                    </div>
+                  </div>
+                );
+              else {
                 return (
                   <div
                     className=" border-2 max-w-full  w-fit px-2 py-1 mt-2 rounded-md  break-words"
@@ -132,17 +156,7 @@ function Chat({ socket, username, room }) {
                     </div>
                   </div>
                 );
-              } else
-                return (
-                  <div
-                    className=" border-2 max-w-full  w-fit px-2 py-1 mt-2 rounded-md  break-words"
-                    key={nanoid()}
-                  >
-                    <div>
-                      <h1 className="text-red-500">{msg.message}</h1>
-                    </div>
-                  </div>
-                );
+              }
             })}
             <div ref={messagesEndRef} />{" "}
             {/* this div will be scrolled into view */}
