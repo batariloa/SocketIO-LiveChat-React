@@ -3,7 +3,12 @@ import io from "socket.io-client";
 import { useState } from "react";
 import Chat from "./components/Chat";
 
-const socket = io.connect("http://socket-io-chat-live.herokuapp.com");
+const url =
+  process.env.NODE_ENV === "production"
+    ? "http://socket-io-chat-live.herokuapp.com"
+    : "http://localhost:3200";
+
+const socket = io.connect(url);
 
 function App() {
   const [username, setUsername] = useState("");
@@ -11,10 +16,8 @@ function App() {
 
   const [showChat, setShowChat] = useState(false);
 
-  const joinRoom = () => {
+  const joinRoom = async () => {
     if (username === "" || room === "") return;
-
-    socket.emit("join_room", room);
 
     setShowChat(true);
   };

@@ -1,20 +1,37 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { nanoid } from "nanoid";
 import { parseTextToEmoji } from "../util/emoji-parser";
+import { FaUserFriends, FaComments } from "react-icons/fa";
+import UserList from "./UserList";
 
 function Chat({ socket, username, room }) {
   const message = useRef("");
   const messagesEndRef = useRef(null); // reference to the end of the messages container
 
+  const [showUsers, setShowUsers] = useState(false);
+  const [userList, setUserList] = useState([]);
+
   const [messageList, setMessageList] = useState([]);
 
   useEffect(() => {
+    const joinRequest = { room, username };
+
+    //start listening for user list before joining
+    socket.on("users", (users) => {
+      console.log("received user list", users);
+      setUserList(users);
+    });
+
     socket.on("receive_message", (messageData) => {
+      console.log("received.");
       messageData.message = parseTextToEmoji(messageData.message);
       setMessageList((prev) => [...prev, messageData]);
     });
+
+    socket.emit("join_room", joinRequest);
+
     return () => {};
-  }, [socket]);
+  }, [socket, username, room]);
 
   const sendMessage = useCallback(async () => {
     if (!message.current || !message.current.value) return;
@@ -57,40 +74,73 @@ function Chat({ socket, username, room }) {
   }, [messageList]);
 
   return (
-    <div className="border-2 flex flex-col w-full max-w-[400px] sm:max-w-[500px] p-3  ">
-      <div className="chat-header w-full">
-        <p>Live chat</p>
+    <div className="border-2 flex flex-col  w-[400px] sm:w-[500px] p-3  h-[500px]  ">
+      <div className=" flex justify-between ">
+        <div>
+          <p>Live chat </p>
+        </div>
+        {showUsers ? (
+          <FaComments
+            onClick={() => {
+              setShowUsers((prev) => !prev);
+            }}
+            className="float-right h-full"
+            size={25}
+          ></FaComments>
+        ) : (
+          <FaUserFriends
+            onClick={() => {
+              setShowUsers((prev) => !prev);
+            }}
+            className="float-right"
+            size={25}
+          ></FaUserFriends>
+        )}
       </div>
-      <div className="chat-body flex-col gap-3 flex  mt-5 h-[400px] overflow-y-scroll">
-        {messageList.map((msg) => {
-          return (
-            <div
-              className="ml-2 border-2 max-w-full mx-2 w-fit px-2 py-1  rounded-md "
-              key={nanoid()}
+
+      {showUsers && (
+        <div className="w-full h-full flex flex-col">
+          <UserList
+            className="w-full min-h-full flex flex-col mt-5"
+            userList={userList}
+          ></UserList>
+        </div>
+      )}
+      {!showUsers && (
+        <div className="w-full flex flex-grow flex-col mt-2 justify-between ">
+          <div className="chat-body  overflow-y-scroll h-[370px]">
+            {messageList.map((msg) => {
+              return (
+                <div
+                  className="ml-2 border-2 max-w-full mx-2 w-fit px-2 py-1  rounded-md "
+                  key={nanoid()}
+                >
+                  <div className="text-sm opacity-50 mb-1">{msg.author}</div>
+                  <div>
+                    <h1>{msg.message}</h1>
+                  </div>
+                </div>
+              );
+            })}
+            <div ref={messagesEndRef} />{" "}
+            {/* this div will be scrolled into view */}
+          </div>
+          <div className="w-full  p-2 flex flex-shrink-0 gap-1">
+            <input
+              className="border-2 w-full rounded-sm"
+              type="text"
+              placeholder="Message"
+              ref={message}
+            ></input>
+            <button
+              className="border-2 w-20  justify-center items-center p-1 hover:scale-110 rounded-sm"
+              onClick={sendMessage}
             >
-              <div className="text-sm opacity-50 mb-1">{msg.author}</div>
-              <div>
-                <h1>{msg.message}</h1>
-              </div>
-            </div>
-          );
-        })}
-        <div ref={messagesEndRef} /> {/* this div will be scrolled into view */}
-      </div>
-      <div className="chat-footer w-full mt-5 p-2 flex gap-1">
-        <input
-          className="border-2 w-full rounded-sm"
-          type="text"
-          placeholder="Message"
-          ref={message}
-        ></input>
-        <button
-          className="border-2 w-20 h-full  flex justify-center items-center p-1 hover:scale-110 rounded-sm"
-          onClick={sendMessage}
-        >
-          Send
-        </button>
-      </div>
+              Send
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
