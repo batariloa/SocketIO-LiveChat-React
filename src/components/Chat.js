@@ -77,7 +77,11 @@ function Chat({ socket, username, room }) {
     <div className="border-2 flex flex-col  w-[400px] sm:w-[500px] p-3  h-[500px]  ">
       <div className=" flex justify-between ">
         <div>
-          <p>Live chat </p>
+          {showUsers ? (
+            <p>People online: {userList.length}</p>
+          ) : (
+            <p>Live chat </p>
+          )}
         </div>
         {showUsers ? (
           <FaComments
@@ -108,11 +112,11 @@ function Chat({ socket, username, room }) {
       )}
       {!showUsers && (
         <div className="w-full flex flex-grow flex-col mt-2 justify-between ">
-          <div className="chat-body  overflow-y-scroll h-[370px]">
+          <div className="chat-body  overflow-y-scroll overflow-x-hidden p-3 h-[370px]">
             {messageList.map((msg) => {
               return (
                 <div
-                  className="ml-2 border-2 max-w-full mx-2 w-fit px-2 py-1  rounded-md "
+                  className=" border-2 max-w-full  w-fit px-2 py-1 mt-2 rounded-md  break-words  "
                   key={nanoid()}
                 >
                   <div className="text-sm opacity-50 mb-1">{msg.author}</div>
