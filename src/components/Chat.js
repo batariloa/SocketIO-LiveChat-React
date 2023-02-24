@@ -74,8 +74,8 @@ function Chat({ socket, username, room }) {
   }, [messageList]);
 
   return (
-    <div className="border-2 flex flex-col  w-[400px] sm:w-[500px] p-3  h-[500px]  ">
-      <div className=" flex justify-between ">
+    <div className="border-2 flex flex-col  w-[80%] sm:w-[500px] p-2  h-[500px]  ">
+      <div className=" flex justify-between p-1">
         <div>
           {showUsers ? (
             <p>People online: {userList.length}</p>
@@ -129,15 +129,15 @@ function Chat({ socket, username, room }) {
             <div ref={messagesEndRef} />{" "}
             {/* this div will be scrolled into view */}
           </div>
-          <div className="w-full  p-2 flex flex-shrink-0 gap-1">
+          <div className="w-full  p-1 flex flex-shrink-0 gap-2">
             <input
-              className="border-2 w-full rounded-sm"
+              className="border-2 w-full rounded-sm p-1"
               type="text"
               placeholder="Message"
               ref={message}
             ></input>
             <button
-              className="border-2 w-20  justify-center items-center p-1 hover:scale-110 rounded-sm"
+              className="border-2 w-20  justify-center items-center p-1 hover:scale-110 rounded-md"
               onClick={sendMessage}
             >
               Send
