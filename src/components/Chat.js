@@ -28,6 +28,12 @@ function Chat({ socket, username, room }) {
       setMessageList((prev) => [...prev, messageData]);
     });
 
+    socket.on("join_error", (error) => {
+      setMessageList((prev) => [
+        ...prev,
+        { type: "error", message: "There was an error joining the room." },
+      ]);
+    });
     socket.emit("join_room", joinRequest);
 
     return () => {};
@@ -74,7 +80,7 @@ function Chat({ socket, username, room }) {
   }, [messageList]);
 
   return (
-    <div className="border-2 flex flex-col  w-[80%] sm:w-[500px] p-2  h-[500px]  ">
+    <div className="border-2 flex flex-col  w-[90%] sm:w-[500px] p-2  h-[500px]  ">
       <div className=" flex justify-between p-1">
         <div>
           {showUsers ? (
@@ -114,17 +120,29 @@ function Chat({ socket, username, room }) {
         <div className="w-full flex flex-grow flex-col mt-2 justify-between ">
           <div className="chat-body  overflow-y-scroll overflow-x-hidden p-3 h-[370px]">
             {messageList.map((msg) => {
-              return (
-                <div
-                  className=" border-2 max-w-full  w-fit px-2 py-1 mt-2 rounded-md  break-words  "
-                  key={nanoid()}
-                >
-                  <div className="text-sm opacity-50 mb-1">{msg.author}</div>
-                  <div>
-                    <h1>{msg.message}</h1>
+              if (msg.type !== "error") {
+                return (
+                  <div
+                    className=" border-2 max-w-full  w-fit px-2 py-1 mt-2 rounded-md  break-words"
+                    key={nanoid()}
+                  >
+                    <div className="text-sm opacity-50 mb-1">{msg.author}</div>
+                    <div>
+                      <h1>{msg.message}</h1>
+                    </div>
                   </div>
-                </div>
-              );
+                );
+              } else
+                return (
+                  <div
+                    className=" border-2 max-w-full  w-fit px-2 py-1 mt-2 rounded-md  break-words"
+                    key={nanoid()}
+                  >
+                    <div>
+                      <h1 className="text-red-500">{msg.message}</h1>
+                    </div>
+                  </div>
+                );
             })}
             <div ref={messagesEndRef} />{" "}
             {/* this div will be scrolled into view */}
